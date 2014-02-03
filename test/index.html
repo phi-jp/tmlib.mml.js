@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+ 
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+ 
+        <title>start tmlib.js</title>
+ 
+        <script src="http://rawgithub.com/phi-jp/tmlib.js/0.2.0/build/tmlib.js"></script>
+        <script src="../scripts/driver.js"></script>
+        <script>
+
+
+/*
+ * preload
+ */
+tm.preload(function() {
+    tm.util.ScriptManager.loadDatGUI();
+});
+
+var audio = null;
+
+/*
+ * main
+ */
+tm.main(function() {
+    
+    if (location.hash) {
+        tm.dom.Element("#source").value = decodeURIComponent(location.hash.substr(1));
+    }
+    
+    play();
+    
+    this.gui = new dat.GUI();
+    this.gui.add(window, 'play');
+    this.gui.add(window, 'stop');
+    this.gui.add(window, 'tweet');
+    this.gui.add(window, 'about');
+    
+    /*
+    this.gui.add(this, 'stop');
+    this.gui.add(this, 'pause');
+    this.gui.add(this, 'resume');
+    this.gui.add(this.webaudio, 'volume', 0.0, 1.0);
+    this.gui.add(this.webaudio, 'playbackRate', 0.0, 2.0);
+    this.gui.add(this.webaudio, 'loop');
+    this.gui.add(this, 'maxHeight', 10, 600, 1);
+    
+    this.gui.close();
+    */
+});
+
+
+
+var play = function() {
+    var source = tm.dom.Element("#source").value;
+    audio = tm.mml.Driver.compile(source);
+    audio.setLoop(false).play();
+};
+
+var stop = function() {
+    if (audio) audio.stop();
+};
+
+var tweet = function() {
+    var url = "http://jsrun.it/phi/dOWk/#" + encodeURIComponent(tm.dom.Element("#source").value);
+    var text= "『WebAudio API で MML 対応してみた - tmlib.js 0.1.6』"
+    var twitterURL = tm.social.Twitter.createURL({
+        type    : "tweet",
+        text    : text,
+        hashtags: "tmlibjs,jsdoit",
+        url     : url,
+    });
+    
+    window.open(twitterURL);
+};
+
+var about = function() {
+    window.open("http://tmlife.net/?p=9383");
+};
+
+
+        </script>
+    </head>
+    <body>
+<h1>
+    WebAudio API で MML 対応してみた - tmlib.js 0.1.6
+</h1>
+<br />
+<textarea id="source" rows="16", cols="60">
+t135 l8 o5 q10 v10
+%1 @4
+ar16.a32aggg fgab-agab- <cdfdc>b-a gr16.g32gar16.a32a afag1
+;
+t135 l8 o5 q10 v8
+%1 @4
+fr16.f32fccc >a<cfgfcfg ab-<d>b-agf cr16.c32cfr16.f32f f>a<fc1
+;
+</textarea>
+<br />
+    </body>
+</html>

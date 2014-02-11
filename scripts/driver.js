@@ -77,10 +77,11 @@ tm.mml = tm.mml || {};
                 var octave = 5; // オクターブ
                 var sndLen = 4;
                 var tempo = 120;
-                var re = new RegExp(/([a-z<>\[\]()@])([-+#]?)(\d*)/g);
+                var re = new RegExp(/([a-z<>\[\]()@])([-+#]?)(\d*)(\.*)/g);
                 var s;
                 while(s = re.exec(trackList[track])){
                     var val = s[3] | 0;
+                    val = (s[4]) ? (val + val*2)/4 : val;
                     var freq, len;
 
                     switch(s[1]){
